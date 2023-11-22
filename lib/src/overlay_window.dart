@@ -30,6 +30,8 @@ class FlutterOverlayWindow {
   static Future<void> showOverlay({
     int height = WindowSize.fullCover,
     int width = WindowSize.matchParent,
+    double horizontalMargin = 0.0,
+    double verticalMargin = 0.0,
     OverlayAlignment alignment = OverlayAlignment.center,
     NotificationVisibility visibility = NotificationVisibility.visibilitySecret,
     OverlayFlag flag = OverlayFlag.defaultFlag,
@@ -43,6 +45,8 @@ class FlutterOverlayWindow {
       {
         "height": height,
         "width": width,
+        "horizontalMargin": horizontalMargin,
+        "verticalMargin": verticalMargin,
         "alignment": alignment.name,
         "flag": flag.name,
         "overlayTitle": overlayTitle,

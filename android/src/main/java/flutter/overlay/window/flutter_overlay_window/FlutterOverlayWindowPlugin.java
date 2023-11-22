@@ -75,6 +75,8 @@ public class FlutterOverlayWindowPlugin implements
             }
             Integer height = call.argument("height");
             Integer width = call.argument("width");
+            double horizontalMargin = call.argument("horizontalMargin");
+            double verticalMargin = call.argument("verticalMargin");
             String alignment = call.argument("alignment");
             String flag = call.argument("flag");
             String overlayTitle = call.argument("overlayTitle");
@@ -85,6 +87,8 @@ public class FlutterOverlayWindowPlugin implements
 
             WindowSetup.width = width != null ? width : -1;
             WindowSetup.height = height != null ? height : -1;
+            WindowSetup.horizontalMargin = horizontalMargin;
+            WindowSetup.verticalMargin = verticalMargin;
             WindowSetup.enableDrag = enableDrag;
             WindowSetup.setGravityFromAlignment(alignment != null ? alignment : "center");
             WindowSetup.setFlag(flag != null ? flag : "flagNotFocusable");

@@ -12,6 +12,8 @@ public abstract class WindowSetup {
 
     static int height = WindowManager.LayoutParams.MATCH_PARENT;
     static int width = WindowManager.LayoutParams.MATCH_PARENT;
+    static double horizontalMargin = 0.0;
+    static double verticalMargin = 0.0;
     static int flag = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
     static int gravity = Gravity.CENTER;
     static BasicMessageChannel<Object> messenger = null;
