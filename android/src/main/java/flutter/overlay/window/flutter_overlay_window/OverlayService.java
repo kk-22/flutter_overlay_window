@@ -310,13 +310,16 @@ public class OverlayService extends Service implements View.OnTouchListener {
                     int yy = params.y + ((int) dy * (invertY ? -1 : 1));
                     params.x = xx;
                     params.y = yy;
-                    windowManager.updateViewLayout(flutterView, params);
+                    if (windowManager != null) {
+                        windowManager.updateViewLayout(flutterView, params);
+                    }
                     dragging = true;
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     lastYPosition = params.y;
                     if (WindowSetup.positionGravity != "none") {
+                        if (windowManager == null) return false;
                         windowManager.updateViewLayout(flutterView, params);
                         mTrayTimerTask = new TrayAnimationTimerTask();
                         mTrayAnimationTimer = new Timer();
@@ -361,7 +364,9 @@ public class OverlayService extends Service implements View.OnTouchListener {
             mAnimationHandler.post(() -> {
                 params.x = (2 * (params.x - mDestX)) / 3 + mDestX;
                 params.y = (2 * (params.y - mDestY)) / 3 + mDestY;
-                windowManager.updateViewLayout(flutterView, params);
+                if (windowManager != null) {
+                    windowManager.updateViewLayout(flutterView, params);
+                }
                 if (Math.abs(params.x - mDestX) < 2 && Math.abs(params.y - mDestY) < 2) {
                     TrayAnimationTimerTask.this.cancel();
                     mTrayAnimationTimer.cancel();
