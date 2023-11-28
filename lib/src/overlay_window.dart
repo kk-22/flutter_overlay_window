@@ -124,6 +124,14 @@ class FlutterOverlayWindow {
     return _res ?? false;
   }
 
+  static Future<void> acquireWakeLock() async {
+    await _channel.invokeMethod('acquireWakeLock');
+  }
+
+  static Future<void> releaseWakeLock() async {
+    await _channel.invokeMethod('releaseWakeLock');
+  }
+
   /// Dispose overlay stream
   static void disposeOverlayListener() {
     _controller.close();

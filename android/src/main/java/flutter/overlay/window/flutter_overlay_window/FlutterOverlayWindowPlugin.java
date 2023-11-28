@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class FlutterOverlayWindowPlugin implements
     private BasicMessageChannel<Object> messenger;
     private Result pendingResult;
     final int REQUEST_CODE_FOR_OVERLAY_PERMISSION = 1248;
+    private PowerManager.WakeLock wakeLock = null;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -113,6 +115,18 @@ public class FlutterOverlayWindowPlugin implements
                 result.success(true);
             }
             return;
+        } else if (call.method.equals("acquireWakeLock")) {
+            if (wakeLock == null) {
+                PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag");
+            }
+            if (!wakeLock.isHeld()) {
+                wakeLock.acquire();
+            }
+            result.success(null);
+        } else if (call.method.equals("releaseWakeLock")) {
+            releaseWakeLock();
+            result.success(null);
         } else {
             result.notImplemented();
         }
@@ -123,6 +137,7 @@ public class FlutterOverlayWindowPlugin implements
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
         WindowSetup.messenger.setMessageHandler(null);
+        releaseWakeLock();
     }
 
     @Override
@@ -175,4 +190,10 @@ public class FlutterOverlayWindowPlugin implements
         return false;
     }
 
+    private void releaseWakeLock() {
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+    }
 }
